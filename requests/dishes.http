@@ -1,0 +1,35 @@
+# Get all dishes
+GET http://localhost:3000/dishes
+
+###
+
+# Get a dish
+GET http://localhost:3000/dishes/1
+
+###
+
+# Create a dish
+POST http://localhost:3000/dishes
+Content-Type: application/json
+
+{
+  "name": "Pizza",
+  "servings": 4
+}
+
+###
+
+# Update a dish
+PUT http://localhost:3000/dishes/1
+Content-Type: application/json
+
+{
+  "id": "3",
+  "name": "Pizza Margherita",
+  "servings": 6
+}
+
+###
+
+# Delete a dish
+DELETE http://localhost:3000/dishes/1
