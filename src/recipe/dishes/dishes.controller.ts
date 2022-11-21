@@ -9,7 +9,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { CreateDishDto, UpdateDishDTO } from 'src/dto/dish.dto';
-import { DishService } from 'src/dishes/dish.service';
+import { DishService } from 'src/recipe/dishes/dish.service';
 
 @Controller('dishes')
 export class DishesController {

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Dish } from 'src/dishes/dish';
+import { Dish } from 'src/recipe/dishes/dish';
 import { CreateDishDto, UpdateDishDTO } from 'src/dto/dish.dto';
-import { ProductService } from 'src/products/product.service';
+import { ProductService } from 'src/recipe/products/product.service';
 
 @Injectable()
 export class DishService {

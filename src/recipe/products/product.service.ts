@@ -4,9 +4,9 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { Product } from 'src/products/product';
+import { Product } from 'src/recipe/products/product';
 import { CreateProductDto } from 'src/dto/product.dto';
-import { DishService } from 'src/dishes/dish.service';
+import { DishService } from 'src/recipe/dishes/dish.service';
 
 @Injectable()
 export class ProductService {
