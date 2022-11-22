@@ -8,7 +8,7 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { CreateDishDto, UpdateDishDTO } from 'src/dto/dish.dto';
+import { CreateDishDto, UpdateDishDTO } from 'src/recipe/dishes/dish.dto';
 import { DishService } from 'src/recipe/dishes/dish.service';
 
 @Controller('dishes')

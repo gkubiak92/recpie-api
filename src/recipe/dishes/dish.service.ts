@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Dish } from 'src/recipe/dishes/dish.entity';
-import { CreateDishDto, UpdateDishDTO } from 'src/dto/dish.dto';
+import { CreateDishDto, UpdateDishDTO } from 'src/recipe/dishes/dish.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
