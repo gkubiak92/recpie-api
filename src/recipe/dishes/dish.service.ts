@@ -1,60 +1,39 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Dish } from 'src/recipe/dishes/dish';
+import { Dish } from 'src/recipe/dishes/dish.entity';
 import { CreateDishDto, UpdateDishDTO } from 'src/dto/dish.dto';
-import { ProductService } from 'src/recipe/products/product.service';
 
 @Injectable()
 export class DishService {
-  private trackId = 1;
-  private dishes: Dish[] = [
-    {
-      id: this.trackId++,
-      name: 'Pizza',
-      servings: 1,
-      description: 'A delicious pizza',
-      products: [],
-    },
-  ];
+  create(dish: CreateDishDto): Promise<Dish> {
+    const newDish = new Dish();
+    Object.assign(newDish, dish);
 
-  constructor(private productService: ProductService) {}
-
-  create(dish: CreateDishDto): Dish {
-    const createdDish = {
-      id: this.trackId++,
-      products: [],
-      ...dish,
-    };
-    this.dishes.push(createdDish);
-    return createdDish;
+    return newDish.save();
   }
 
-  getAll(): readonly Dish[] {
-    return this.dishes.map((dish) => ({
-      ...dish,
-      products: this.productService.getAllByDishId(dish.id),
-    }));
+  getAll(): Promise<Dish[]> {
+    return Dish.find({ relations: ['products'] });
   }
 
-  getOneById(dishId: number): Dish {
-    const dish = this.dishes.find((dish) => dish.id === dishId);
-
+  async getOneById(id: number): Promise<Dish> {
+    const dish = await Dish.findOne({ where: { id }, relations: ['products'] });
     if (!dish) {
       throw new NotFoundException('Dish not found');
     }
 
-    return { ...dish, products: this.productService.getAllByDishId(dishId) };
+    return dish;
   }
 
-  update(dish: UpdateDishDTO): Dish {
-    const dishToUpdate = this.getOneById(dish.id);
+  async update(dish: UpdateDishDTO): Promise<Dish> {
+    const dishToUpdate = await this.getOneById(dish.id);
     Object.assign(dishToUpdate, dish);
 
-    return dishToUpdate;
+    return dishToUpdate.save();
   }
 
-  delete(dishId: number): { dishId: number } {
-    this.getOneById(dishId);
-    this.dishes = this.dishes.filter((dish) => dish.id !== dishId);
-    return { dishId };
+  async delete(id: number): Promise<Dish> {
+    const dishToRemove = await this.getOneById(id);
+
+    return dishToRemove.remove();
   }
 }
