@@ -1,22 +1,28 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Dish } from 'src/recipe/dishes/dish.entity';
 import { CreateDishDto, UpdateDishDTO } from 'src/dto/dish.dto';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class DishService {
-  create(dish: CreateDishDto): Promise<Dish> {
-    const newDish = new Dish();
-    Object.assign(newDish, dish);
+  constructor(
+    @InjectRepository(Dish) private dishRepository: Repository<Dish>,
+  ) {}
 
-    return newDish.save();
+  create(dish: CreateDishDto): Promise<Dish> {
+    return this.dishRepository.save(dish);
   }
 
   getAll(): Promise<Dish[]> {
-    return Dish.find({ relations: ['products'] });
+    return this.dishRepository.find({ relations: ['products'] });
   }
 
   async getOneById(id: number): Promise<Dish> {
-    const dish = await Dish.findOne({ where: { id }, relations: ['products'] });
+    const dish = await this.dishRepository.findOne({
+      where: { id },
+      relations: ['products'],
+    });
     if (!dish) {
       throw new NotFoundException('Dish not found');
     }
@@ -24,16 +30,15 @@ export class DishService {
     return dish;
   }
 
-  async update(dish: UpdateDishDTO): Promise<Dish> {
-    const dishToUpdate = await this.getOneById(dish.id);
-    Object.assign(dishToUpdate, dish);
+  async update(dish: UpdateDishDTO) {
+    await this.getOneById(dish.id);
 
-    return dishToUpdate.save();
+    return this.dishRepository.update(dish.id, dish);
   }
 
   async delete(id: number): Promise<Dish> {
     const dishToRemove = await this.getOneById(id);
 
-    return dishToRemove.remove();
+    return this.dishRepository.remove(dishToRemove);
   }
 }
