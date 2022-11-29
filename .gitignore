@@ -36,3 +36,6 @@ lerna-debug.log*
 
 # DB
 /database/recipes.db
+
+# Environtment variables
+.env

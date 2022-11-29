@@ -11,7 +11,6 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class ProductService {
   constructor(
-    private dishService: DishService,
     @InjectRepository(Product) private productRepository: Repository<Product>,
   ) {}
 
@@ -31,16 +30,15 @@ export class ProductService {
     return product;
   }
 
-  getAllByDishId(dishId: number): Promise<Product[]> {
-    return this.productRepository.find({
-      where: { dish: { id: dishId } },
-      relations: ['dish'],
-    });
-  }
+  // getAllByDishId(dishId: number): Promise<Product[]> {
+  //   return this.productRepository.find({
+  //     where: { ingredients: { id: dishId } },
+  //     relations: ['dish'],
+  //   });
+  // }
 
   async create(product: CreateProductDto): Promise<Product> {
     const newProduct = this.productRepository.create(product);
-    newProduct.dish = await this.dishService.getOneById(product.dishId);
     return this.productRepository.save(newProduct);
   }
 
