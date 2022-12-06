@@ -3,8 +3,10 @@ import { RecipeModule } from './recipe/recipe.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
-import { databaseConfig } from './config/database.config';
 import { envValidationSchema } from 'src/config/envValidation.config';
+import { dataSourceOptions } from 'src/config/database.config';
+
+console.log(process.env.DB_NAME);
 
 @Module({
   imports: [
@@ -13,7 +15,7 @@ import { envValidationSchema } from 'src/config/envValidation.config';
       envFilePath: '.env',
       validationSchema: envValidationSchema,
     }),
-    TypeOrmModule.forRootAsync(databaseConfig),
+    TypeOrmModule.forRoot(dataSourceOptions),
     RecipeModule,
     UserModule,
   ],

@@ -15,6 +15,9 @@ export class User extends BaseEntity {
   @Column({ type: 'varchar' })
   username: string;
 
+  @Column({ type: 'varchar', nullable: true })
+  password: string;
+
   @OneToMany(() => Dish, (dish) => dish.user)
   dishes: Dish[];
 }
